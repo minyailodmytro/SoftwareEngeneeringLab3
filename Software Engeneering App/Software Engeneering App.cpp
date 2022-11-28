@@ -5,8 +5,8 @@ using namespace std;
 int main()
 {
 
-    double a, b, step;
-    int n;
+    double m, n, step;
+    int x;
     double sum = 0;
     double mlt = 1;
     int flagZero = 0; // checks division by zero
