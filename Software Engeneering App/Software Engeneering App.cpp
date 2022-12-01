@@ -1,84 +1,101 @@
 #include <iostream>
-#include <limits>
 using namespace std;
 
-int main()
+void checkValidInput()
 {
+    if (cin.fail()) throw "Invalid data: number required";
+}
 
-    double a, b, step;
-    int n;
+void checkValidParamN(int n)
+{
+    if(n < 4) throw "Invalid data: n must be bigger than 4";
+}
+
+void checkValidParamsAB(double a, double b)
+{
+    if (b < a) throw "Invalid data: b must be bigger than a";
+}
+
+void checkValidParamStep(double step)
+{
+    if (step <= 0) throw "Invalid data: step must be bigger than 0";
+}
+
+double calculate(int n, double x)
+{
     double sum = 0;
     double mlt = 1;
-    int flagZero = 0; // checks division by zero
-    do
+    bool flagZero = false;
+    if (x <= 0)
     {
-        cout << "Input n>=4, n=";
-        cin >> n;
-        if (cin.fail() || n < 4)
+        for (int i = 0; i <= n - 1; i++)
         {
-            cout << "ERROR! Illegal n" << endl;
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-    } while (cin.fail() || n < 4);
-    do
-    {
-        cout << "Input A; B: ";
-        cin >> a >> b;
-        if (cin.fail() || a > b) {
-            cout << "ERROR! A and B must be numbers and B must be bigger than A!" << endl;
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-    } while (cin.fail() || a > b);
-    do
-    {
-        cout << "Input step>0, step=";
-        cin >> step;
-        if (cin.fail() || step <= 0) cout << "ERROR! Step must be a number and bigger than zero" << endl;
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    } while (cin.fail() || step <= 0);
-    for (double x = a; x <= b; x += step)
-    {
-        sum = 0;
-        mlt = 1;
-        if (x <= 0)
-        {
-            for (int i = 0; i <= n - 1; i++)
+            for (int j = 0; j <= n - 1; j++)
             {
-                for (int j = 0; j <= n - 1; j++)
+                if (x == (i - j))
                 {
-                    if (x == (i - j))
-                    {
-                        flagZero = 1;
-                        i = n - 1;
-                        j = n - 1;
-                    }
-                    else
-                    {
-                        sum += 1.0 / (x - i + j);
-                    }
+                    flagZero = true;
+                    i = n - 1;
+                    j = n - 1;
+                }
+                else
+                {
+                    sum += 1.0 / (x - i + j);
                 }
             }
-            if (flagZero == 1)
-            {
-                cout << "x=" << x << "; " << "ERROR! Illegal x: division by zero" << endl;
-                flagZero = 0;
-            }
-            else
-            {
-                cout << "x=" << x << "; " << "sum=" << sum << endl;
-            }
+        }
+        if (flagZero == true)
+        {
+            return flagZero;
+            flagZero = false;
         }
         else
         {
-            for (int i = 1; i <= n; i++)
-            {
-                mlt *= 1.0 / x - 1.0 / i;
-            }
-            cout << "x=" << x << "; " << "mlt=" << mlt << endl;
+            return sum;
         }
     }
-    return 0;
+    else
+    {
+        for (int i = 1; i <= n; i++)
+        {
+            mlt *= 1.0 / x - 1.0 / i;
+        }
+        return mlt;
+    }
+}
+
+int main()
+{
+    double a, b, step;
+    int n;
+    try
+    {
+        cout << "Input n >= 4, n: ";
+        cin >> n;
+        checkValidInput();
+        checkValidParamN(n);
+        cout << "Input A; B: ";
+        cin >> a >> b;
+        checkValidInput();
+        checkValidParamsAB(a,b);
+        cout << "Input step > 0, step: ";
+        cin >> step;
+        checkValidInput();
+        checkValidParamStep(step);
+        for (double x = a; x <= b; x += step)
+        {
+            if (calculate(n, x) == true) cout << "x = " << x << "; Division by zero" << endl;
+            else cout << "x = " << x << "; " << "y = " << calculate(n, x) << endl;
+        }
+    }
+    catch (const char* ex)
+    {
+        cout << ex << endl;
+        return -1;
+    }
+    catch (...)
+    {
+        cout << "Unknown error" << endl;
+        return -2;
+    }
 }
