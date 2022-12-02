@@ -132,4 +132,34 @@ namespace UnitTest1
 			}
 		}
 	};
+	TEST_CLASS(checkValidInput_Tests)
+	{
+	public:
+		TEST_METHOD(checkValidInput_getNumber_exceptionNotThrown)
+		{
+			double a;
+			try
+			{
+				checkValidInput();
+				Assert::IsTrue(true);
+			}
+			catch (...)
+			{
+				Assert::Fail;
+			}
+		}
+		TEST_METHOD(checkValidInput_getChar_exceptionThrown)
+		{
+			char x;
+			try
+			{
+				checkValidInput();
+				Assert::Fail;
+			}
+			catch (...)
+			{
+				Assert::IsTrue(true);
+			}
+		}
+	};
 }
