@@ -84,8 +84,8 @@ int main()
         checkValidParamStep(step);
         for (double x = a; x <= b; x += step)
         {
-            if (calculate(n, x) == true) cout << "x = " << x << "; Division by zero" << endl;
-            else cout << "x = " << x << "; " << "y = " << calculate(n, x) << endl;
+            if (calculate(n, x) == true) cout << "x = " << x << "\t" << "Division by zero" << endl;
+            else cout << "x = " << x << "\t" << "y = " << calculate(n, x) << endl;
         }
     }
     catch (const char* ex)
